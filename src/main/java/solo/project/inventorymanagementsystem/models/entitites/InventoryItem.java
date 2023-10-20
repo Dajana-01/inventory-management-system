@@ -20,6 +20,6 @@ public class InventoryItem {
     private double unitPrice;
     @ManyToOne
     @JoinColumn(name = "item_name")
-    private Item item;
+    private Item name;
 }
 

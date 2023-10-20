@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import solo.project.inventorymanagementsystem.models.enums.OrderStatus;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -23,12 +24,12 @@ public class Order {
 
     private String orderNumber; // You can generate this automatically
 
-    private Date submittedDate;
+    private LocalDateTime submittedDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    private Date deadlineDate;
+    private LocalDateTime deadlineDate;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -37,5 +38,7 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<Item> orderItems;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Delivery delivery;
 
 }

@@ -21,6 +21,9 @@ public class Item {
 
     private String name;
     private int requestedQuantity;
+    @ManyToOne
+    @JoinColumn(name = "inventory_item_id")
+    private InventoryItem inventoryItem;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

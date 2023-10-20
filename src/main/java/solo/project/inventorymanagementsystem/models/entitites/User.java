@@ -34,9 +34,22 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Order> orders;
 
+    @OneToMany(mappedBy = "user")
+    private List<TokenModel> tokens;
+    public User(String login, String encryptedPassword, Role role,String email) {
+        this.username = login;
+        this.password = encryptedPassword;
+        this.role = role;
+        this.email=email;
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
+        if (this.role == Role.SYSTEM_ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_SYSTEM_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_WAREHOUSE_MANAGER"));
+        if (this.role == Role.CLIENT) return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
+        if (this.role == Role.WAREHOUSE_MANAGER) return List.of(new SimpleGrantedAuthority("ROLE_WAREHOUSE_MANAGER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
     }
 
     @Override
